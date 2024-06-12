@@ -54,7 +54,6 @@ const String CLASSES[] = {
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 String maxRes = "";
 int maxVal = 0;
-uint16_t loopCount = 0;
 
 void setup() {
 
@@ -69,11 +68,6 @@ void setup() {
   Serial.println("--------------------------------------------");
   Serial.println("Arduino Nano 33 BLE Sense running TensorFlow Lite Micro");
   Serial.println("");
-
-  maxRes = "Color Classify";
-  
-  lcd.clear();
-  lcd.print(maxRes);
 
   if (!APDS.begin()) {
     Serial.println("Error initializing APDS9960 sensor.");
@@ -129,13 +123,13 @@ void loop() {
       return;
     }
 
+    maxRes = "";
     maxVal = 0;
-    loopCount = 0;
 
     // Output results
     for (int i = 0; i < NUM_CLASSES; i++) {
       int temp = int(tflOutputTensor->data.f[i] * 100);
-      String res = CLASSES[i] + " " + temp + "%\0";
+      String res = CLASSES[i] + " " + temp + "%";
       Serial.println(res);
 
       if(maxVal < temp) {
@@ -148,9 +142,13 @@ void loop() {
 
     lcd.clear();
     lcd.print(maxRes);
-
-    // Wait for the object to be moved away
-    while (!APDS.proximityAvailable() || (APDS.readProximity() == 0)) {}
   }
+  else if(p == 0 && c <= 10){
+    lcd.clear();
+    lcd.print("Color Classify");
+  }
+
+  // Wait for the object to be moved away
+    while (!APDS.proximityAvailable() || (APDS.readProximity() == 0)) {}
 
 }
