@@ -149,8 +149,8 @@ void loop() {
 
     // Wait for the object to be moved away
     while (!APDS.proximityAvailable() || (APDS.readProximity() == 0)) {
-      uint16_t count = 0;
-      if(!(~count)) {
+      uint32_t count = 0;
+      if(count >= UINT32_MAX) {
         lcd.setCursor(0, 1);
         lcd.print("Take device off");
         continue;
