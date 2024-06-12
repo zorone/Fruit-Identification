@@ -136,11 +136,13 @@ void loop() {
 
     // Run inferencing
     TfLiteStatus invokeStatus = tflInterpreter->Invoke();
+    Serial.println("Invoke tflLite");
     if (invokeStatus != kTfLiteOk) {
       Serial.println("Invoke failed!");
-      while (1);
       return;
     }
+
+    Serial.println("Invoke Successful");
 
     maxRes = "";
     maxVal = 0;
