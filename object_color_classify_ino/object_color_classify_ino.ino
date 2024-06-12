@@ -54,6 +54,7 @@ const String CLASSES[] = {
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 String maxRes = "";
 int maxVal = 0;
+uint16_t loopCount = 0;
 
 void setup() {
 
@@ -129,6 +130,7 @@ void loop() {
     }
 
     maxVal = 0;
+    loopCount = 0;
 
     // Output results
     for (int i = 0; i < NUM_CLASSES; i++) {
@@ -149,14 +151,17 @@ void loop() {
 
     // Wait for the object to be moved away
     while (!APDS.proximityAvailable() || (APDS.readProximity() == 0)) {
-      uint32_t count = 0;
-      if(count >= UINT32_MAX) {
+      uint16_t count = 0;
+      if(count >= UINT16_MAX) {
         lcd.setCursor(0, 1);
         lcd.print("Take device off");
         continue;
       }
       count++;
     }
+  }
+  else if(loopCount < UINT16_MAX){
+    loopCount++;
   }
   else {
     lcd.clear();
@@ -165,8 +170,8 @@ void loop() {
     lcd.print("Bad light");
 
     while (!APDS.proximityAvailable() || (APDS.readProximity() == 0)) {
-      uint32_t count = 0;
-      if(count >= UINT32_MAX) {
+      uint16_t count = 0;
+      if(count >= UINT16_MAX) {
         lcd.clear();
         lcd.print("Color Classify");
         continue;
