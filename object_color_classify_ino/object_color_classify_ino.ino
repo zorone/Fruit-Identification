@@ -69,6 +69,11 @@ void setup() {
   Serial.println("Arduino Nano 33 BLE Sense running TensorFlow Lite Micro");
   Serial.println("");
 
+  maxRes = "Color Classify";
+  
+  lcd.clear();
+  lcd.print(maxRes);
+
   if (!APDS.begin()) {
     Serial.println("Error initializing APDS9960 sensor.");
   }
@@ -94,11 +99,6 @@ void setup() {
 void loop() {
   int r, g, b, p, c;
   float sum;
-
-  maxRes = "Color Classify";
-  
-  lcd.clear();
-  lcd.print(maxRes);
 
   // check if both color and proximity data is available to sample
   while (!APDS.colorAvailable() || !APDS.proximityAvailable()) {}
@@ -162,9 +162,17 @@ void loop() {
     lcd.clear();
     lcd.print("Couldn't Detect");
     lcd.setCursor(0, 1);
-    lcd.print("Please adjust light");
+    lcd.print("Bad ambiant light");
 
-    while (!APDS.proximityAvailable() || (APDS.readProximity() == 0)) {}
+    while (!APDS.proximityAvailable() || (APDS.readProximity() == 0)) {
+      uint32_t count = 0;
+      if(count >= UINT32_MAX) {
+        lcd.setCursor(0, 1);
+        lcd.print("Color Classify");
+        continue;
+      }
+      count++;
+    }
   }
 
 }
