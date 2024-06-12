@@ -73,6 +73,9 @@ void setup() {
     Serial.println("Error initializing APDS9960 sensor.");
   }
 
+  lcd.clear();
+  lcd.print("Color Classify");
+
   // get the TFL representation of the model byte array
   tflModel = tflite::GetModel(model);
   if (tflModel->version() != TFLITE_SCHEMA_VERSION) {
@@ -145,7 +148,7 @@ void loop() {
   }
   else if(p == 0 && c <= 10){
     lcd.clear();
-    lcd.print("Color Classify");
+    lcd.print("Bad Light Source");
   }
 
   // Wait for the object to be moved away
