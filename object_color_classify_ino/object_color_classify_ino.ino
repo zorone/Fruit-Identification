@@ -45,8 +45,12 @@ byte tensorArena[tensorArenaSize];
 // array to map gesture index to a name
 const String CLASSES[] = {
   "Apple", // u8"\U0001F34E", // Apple
+  "Green Apple",
+  "Kiwi",
+  "Mangosteen",
   "Banana", // u8"\U0001F34C", // Banana
-  "Orange" // u8"\U0001F34A"  // Orange
+  "Orange", // u8"\U0001F34A"  // Orange
+  "Trolley"
 };
 
 #define NUM_CLASSES (sizeof(CLASSES) / sizeof(CLASSES[0]))
