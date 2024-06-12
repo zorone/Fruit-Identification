@@ -133,6 +133,12 @@ void loop() {
     tflInputTensor->data.f[0] = redRatio;
     tflInputTensor->data.f[1] = greenRatio;
     tflInputTensor->data.f[2] = blueRatio;
+    tflInputTensor->data.f[3] = 0;
+    tflInputTensor->data.f[4] = 0;
+    tflInputTensor->data.f[5] = 0;
+    tflInputTensor->data.f[6] = 0;
+
+    Serial.println("Set data input successfully");
 
     // Run inferencing
     TfLiteStatus invokeStatus = tflInterpreter->Invoke();
