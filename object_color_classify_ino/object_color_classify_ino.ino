@@ -164,6 +164,7 @@ void loop() {
     lcd.setCursor(0, 1);
     lcd.print("Please adjust light");
 
+    while (!APDS.proximityAvailable() || (APDS.readProximity() == 0)) {}
   }
 
 }
