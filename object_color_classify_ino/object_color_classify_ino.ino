@@ -110,17 +110,17 @@ void loop() {
   p = APDS.readProximity();
   sum = r + g + b;
   Serial.print("r = ");
-  serial.print(r);
+  Serial.print(r);
   Serial.print(", g = ");
-  serial.print(g);
+  Serial.print(g);
   Serial.print(", b = ");
-  serial.println(b);
+  Serial.println(b);
   Serial.print("c = ");
-  serial.print(c);
+  Serial.print(c);
   Serial.print(", p = ");
-  serial.print(p);
+  Serial.print(p);
   Serial.print(", sum = ");
-  serial.println(sum);
+  Serial.println(sum);
 
   // check if there's an object close and well illuminated enough
   if (p == 0 && c > 10 && sum > 0) {
