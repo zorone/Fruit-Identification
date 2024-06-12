@@ -95,6 +95,10 @@ void loop() {
   int r, g, b, p, c;
   float sum;
 
+  maxRes = "Color Classify";
+  lcd.clear();
+  lcd.println(maxRes);
+
   // check if both color and proximity data is available to sample
   while (!APDS.colorAvailable() || !APDS.proximityAvailable()) {}
 
@@ -129,7 +133,7 @@ void loop() {
     // Output results
     for (int i = 0; i < NUM_CLASSES; i++) {
       int temp = int(tflOutputTensor->data.f[i] * 100);
-      String res = CLASSES[i] + " " + temp + "%";
+      String res = CLASSES[i] + " " + temp + "%\0";
       Serial.println(res);
 
       if(maxVal < temp) {
@@ -144,7 +148,20 @@ void loop() {
     lcd.println(maxRes);
 
     // Wait for the object to be moved away
-    while (!APDS.proximityAvailable() || (APDS.readProximity() == 0)) {}
+    while (!APDS.proximityAvailable() || (APDS.readProximity() == 0)) {
+      uint16_t count = 0;
+      if(!(~count)) {
+        lcd.println("Take device off");
+        continue;
+      }
+      count++;
+    }
+  }
+  else {
+    lcd.clear();
+    lcd.println("Couldn't Detect");
+    lcd.println("Please adjust light");
+
   }
 
 }
