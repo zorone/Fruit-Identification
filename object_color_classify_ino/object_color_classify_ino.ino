@@ -1,3 +1,4 @@
+
 /*
   Object classifier by color
   --------------------------
@@ -20,6 +21,7 @@
 #include <tensorflow/lite/micro/micro_interpreter.h>
 #include <tensorflow/lite/schema/schema_generated.h>
 #include <Arduino_APDS9960.h>
+#include <LiquidCrystal_I2C.h>
 #include "model.h"
 
 // global variables used for TensorFlow Lite (Micro)
@@ -49,7 +51,16 @@ const char* CLASSES[] = {
 
 #define NUM_CLASSES (sizeof(CLASSES) / sizeof(CLASSES[0]))
 
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+String maxRes = "";
+int maxVal = 0;
+
 void setup() {
+
+  lcd.begin();                                                    //เริ่มต้นใช้งาน LCD
+  lcd.backlight();
+  lcd.home();
+
   Serial.begin(9600);
   while (!Serial) {};
 
@@ -112,14 +123,26 @@ void loop() {
       return;
     }
 
+    maxRes = "";
+    maxVal = 0;
+
     // Output results
     for (int i = 0; i < NUM_CLASSES; i++) {
-      Serial.print(CLASSES[i]);
-      Serial.print(" ");
-      Serial.print(int(tflOutputTensor->data.f[i] * 100));
-      Serial.print("%\n");
+      int temp = int(tflOutputTensor->data.f[i] * 100);
+      char *res = "";
+      sprintf(res, "%s %d%%", CLASSES[i], temp);
+      Serial.println(res);
+
+      if(maxVal < temp) {
+        maxVal = temp;
+        maxRes = res;
+      }
+
     }
     Serial.println();
+
+    lcd.clear();
+    lcd.println(maxRes);
 
     // Wait for the object to be moved away
     while (!APDS.proximityAvailable() || (APDS.readProximity() == 0)) {}
