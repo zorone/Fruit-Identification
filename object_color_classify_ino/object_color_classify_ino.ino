@@ -109,6 +109,8 @@ void loop() {
   APDS.readColor(r, g, b, c);
   p = APDS.readProximity();
   sum = r + g + b;
+  Serial.print("r = " + r + ", g = " + g + ", b = " + b + "\n");
+  Serial.print("c = " + c + ", p = " + p + ", sum = " + sum + "\n");
 
   // check if there's an object close and well illuminated enough
   if (p == 0 && c > 10 && sum > 0) {
