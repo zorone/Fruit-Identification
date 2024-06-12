@@ -46,11 +46,7 @@ byte tensorArena[tensorArenaSize];
 const String CLASSES[] = {
   "Apple", // u8"\U0001F34E", // Apple
   "Banana", // u8"\U0001F34C", // Banana
-  "Green Apple",
-  "Kiwi",
-  "Mangosteen",
   "Orange", // u8"\U0001F34A"  // Orange
-  "Trolley"
 };
 
 #define NUM_CLASSES (sizeof(CLASSES) / sizeof(CLASSES[0]))
@@ -133,10 +129,6 @@ void loop() {
     tflInputTensor->data.f[0] = redRatio;
     tflInputTensor->data.f[1] = greenRatio;
     tflInputTensor->data.f[2] = blueRatio;
-    tflInputTensor->data.f[3] = 0;
-    tflInputTensor->data.f[4] = 0;
-    tflInputTensor->data.f[5] = 0;
-    tflInputTensor->data.f[6] = 0;
 
     Serial.println("Set data input successfully");
 
