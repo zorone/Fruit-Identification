@@ -150,34 +150,7 @@ void loop() {
     lcd.print(maxRes);
 
     // Wait for the object to be moved away
-    while (!APDS.proximityAvailable() || (APDS.readProximity() == 0)) {
-      uint16_t count = 0;
-      if(count >= UINT16_MAX) {
-        lcd.setCursor(0, 1);
-        lcd.print("Take device off");
-        continue;
-      }
-      count++;
-    }
-  }
-  else if(loopCount < UINT16_MAX){
-    loopCount++;
-  }
-  else {
-    lcd.clear();
-    lcd.print("Couldn't Detect");
-    lcd.setCursor(0, 1);
-    lcd.print("Bad light");
-
-    while (!APDS.proximityAvailable() || (APDS.readProximity() == 0)) {
-      uint16_t count = 0;
-      if(count >= UINT16_MAX) {
-        lcd.clear();
-        lcd.print("Color Classify");
-        continue;
-      }
-      count++;
-    }
+    while (!APDS.proximityAvailable() || (APDS.readProximity() == 0)) {}
   }
 
 }
