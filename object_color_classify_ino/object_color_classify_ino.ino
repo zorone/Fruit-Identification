@@ -162,12 +162,12 @@ void loop() {
     lcd.clear();
     lcd.print("Couldn't Detect");
     lcd.setCursor(0, 1);
-    lcd.print("Bad ambiant light");
+    lcd.print("Bad light");
 
     while (!APDS.proximityAvailable() || (APDS.readProximity() == 0)) {
       uint32_t count = 0;
       if(count >= UINT32_MAX) {
-        lcd.setCursor(0, 1);
+        lcd.clear();
         lcd.print("Color Classify");
         continue;
       }
