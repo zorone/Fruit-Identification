@@ -43,7 +43,7 @@ constexpr int tensorArenaSize = 8 * 1024;
 byte tensorArena[tensorArenaSize];
 
 // array to map gesture index to a name
-const char* CLASSES[] = {
+const String CLASSES[] = {
   "Apple", // u8"\U0001F34E", // Apple
   "Banana", // u8"\U0001F34C", // Banana
   "Orange" // u8"\U0001F34A"  // Orange
@@ -129,8 +129,7 @@ void loop() {
     // Output results
     for (int i = 0; i < NUM_CLASSES; i++) {
       int temp = int(tflOutputTensor->data.f[i] * 100);
-      char *res = "";
-      sprintf(res, "%s %d%%", CLASSES[i], temp);
+      String res = CLASSES[i] + " " + temp + "%";
       Serial.println(res);
 
       if(maxVal < temp) {
