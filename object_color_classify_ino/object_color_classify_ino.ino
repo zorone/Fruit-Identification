@@ -124,7 +124,7 @@ void loop() {
 
   // check if there's an object close and well illuminated enough
   if (p == 0 && c > 10 && sum > 0) {
-
+    Serial.println("Enter tflLite condition");
     float redRatio = r / sum;
     float greenRatio = g / sum;
     float blueRatio = b / sum;
