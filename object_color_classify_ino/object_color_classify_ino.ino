@@ -96,8 +96,9 @@ void loop() {
   float sum;
 
   maxRes = "Color Classify";
+  
   lcd.clear();
-  lcd.println(maxRes);
+  lcd.print(maxRes);
 
   // check if both color and proximity data is available to sample
   while (!APDS.colorAvailable() || !APDS.proximityAvailable()) {}
@@ -127,7 +128,6 @@ void loop() {
       return;
     }
 
-    maxRes = "";
     maxVal = 0;
 
     // Output results
@@ -145,13 +145,14 @@ void loop() {
     Serial.println();
 
     lcd.clear();
-    lcd.println(maxRes);
+    lcd.print(maxRes);
 
     // Wait for the object to be moved away
     while (!APDS.proximityAvailable() || (APDS.readProximity() == 0)) {
       uint16_t count = 0;
       if(!(~count)) {
-        lcd.println("Take device off");
+        lcd.setCursor(0, 1);
+        lcd.print("Take device off");
         continue;
       }
       count++;
@@ -159,8 +160,9 @@ void loop() {
   }
   else {
     lcd.clear();
-    lcd.println("Couldn't Detect");
-    lcd.println("Please adjust light");
+    lcd.print("Couldn't Detect");
+    lcd.setCursor(0, 1);
+    lcd.print("Please adjust light");
 
   }
 
