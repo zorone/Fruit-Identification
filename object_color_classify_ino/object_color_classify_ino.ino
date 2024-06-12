@@ -45,10 +45,10 @@ byte tensorArena[tensorArenaSize];
 // array to map gesture index to a name
 const String CLASSES[] = {
   "Apple", // u8"\U0001F34E", // Apple
+  "Banana", // u8"\U0001F34C", // Banana
   "Green Apple",
   "Kiwi",
   "Mangosteen",
-  "Banana", // u8"\U0001F34C", // Banana
   "Orange", // u8"\U0001F34A"  // Orange
   "Trolley"
 };
