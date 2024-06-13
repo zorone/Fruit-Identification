@@ -12,6 +12,8 @@
 #include <LiquidCrystal_I2C.h>
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
+#define DEBUG 0
+
 // global variables used for TensorFlow Lite (Micro)
 tflite::MicroErrorReporter tflErrorReporter;
 
@@ -49,24 +51,26 @@ void setup() {
   lcd.print("Color Clssify");
   lcd.setCursor(0, 1);
   
-  //Serial.begin(9600);
+  Serial.begin(9600);
   //pinMode(2, OUTPUT);
   //digitalWrite(2, HIGH);
-  //while (!Serial) {};
+  while (!Serial) {};
 
-  //Serial.println("Object classification using RGB color sensor");
-  //Serial.println("--------------------------------------------");
-  //Serial.println("Arduino Nano 33 BLE Sense running TensorFlow Lite Micro");
-  //Serial.println("");
+  Serial.println("Object classification using RGB color sensor");
+  Serial.println("--------------------------------------------");
+  Serial.println("Arduino Nano 33 BLE Sense running TensorFlow Lite Micro");
+  Serial.println("");
 
   if (!APDS.begin()) {
     lcd.println("Error initializing APDS9960 sensor.");
+    Serial.println("Error initializing APDS9960 sensor.");
   }
 
   // get the TFL representation of the model byte array
   tflModel = tflite::GetModel(model);
   if (tflModel->version() != TFLITE_SCHEMA_VERSION) {
     lcd.println("Model schema mismatch!");
+    Serial.println("Model schema mismatch!");
     while (1);
   }
 
@@ -93,9 +97,26 @@ void loop() {
   p = APDS.readProximity();
   sum = r + g + b;
 
+  #if DEBUG == 1
+  Serial.print("r = ");
+  Serial.print(r);
+  Serial.print(", g = ");
+  Serial.print(g);
+  Serial.print(", b = ");
+  Serial.println(b);
+  Serial.print("c = ");
+  Serial.print(c);
+  Serial.print(", p = ");
+  Serial.print(p);
+  Serial.print(", sum = ");
+  Serial.println(sum);
+  #endif
+
   // check if there's an object close and well illuminated enough
   if (p == 0 && c > 10 && sum > 0) {
-
+  #if DEBUG == 1
+    Serial.println("Enter tflLite condition");
+  #endif
     float redRatio = r / sum;
     float greenRatio = g / sum;
     float blueRatio = b / sum;
@@ -105,13 +126,25 @@ void loop() {
     tflInputTensor->data.f[1] = greenRatio;
     tflInputTensor->data.f[2] = blueRatio;
 
+    #if DEBUG == 1
+    Serial.println("Set data input successfully");
+    #endif
+
     // Run inferencing
     TfLiteStatus invokeStatus = tflInterpreter->Invoke();
+    #if DEBUG == 1
+    Serial.println("Invoke tflLite");
+    #endif
+
     if (invokeStatus != kTfLiteOk) {
       lcd.println("Invoke failed!");
-      while (1);
+      Serial.println("Invoke failed!");
       return;
     }
+
+    #if DEBUG == 1
+    Serial.println("Invoke Successful");
+    #endif
 
     // Output results
     float max = -1;
@@ -119,10 +152,16 @@ void loop() {
     
     for (int i = 0; i < NUM_CLASSES; i++) {
       if(tflOutputTensor->data.f[i] > max){
+        Serial.print(CLASSES[i]);
+        Serial.print(" ");
+        Serial.print(int(tflOutputTensor->data.f[i] * 100));
+        Serial.println("%");
+
         max = tflOutputTensor->data.f[i];
         maxi = i;
       }
     }
+    Serial.println();
     
     lcd.clear();
     lcd.print(CLASSES[maxi]);
@@ -130,9 +169,14 @@ void loop() {
     lcd.print(int(tflOutputTensor->data.f[maxi] * 100));
     lcd.print("%");
     lcd.setCursor(0, 1);
+  }
+
+  else if(p == 0 && c <= 10){
+    lcd.clear();
+    lcd.print("Bad Light Source");
+  }
 
     // Wait for the object to be moved away
     while (!APDS.proximityAvailable() || (APDS.readProximity() == 0)) {}
-  }
 
 }
