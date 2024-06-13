@@ -44,7 +44,7 @@ const char* CLASSES[] = {
 #define NUM_CLASSES (sizeof(CLASSES) / sizeof(CLASSES[0]))
 
 void setup() {
-  lcd.init();         
+  lcd.begin();         
   lcd.backlight();
   lcd.print("Color Clssify");
   lcd.setCursor(0, 1);
