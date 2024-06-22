@@ -118,7 +118,6 @@ void loop() {
   LOG(p);
   LOG(", sum = ");
   LOGln(sum);
-  #endif
 
   // check if there's an object close and well illuminated enough
   if (p == 0 && c > 10 && sum > 0) {
