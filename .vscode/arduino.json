@@ -1,0 +1,5 @@
+{
+    "board": "arduino:mbed_nano:nano33ble",
+    "sketch": "object_color_classify_ino\\object_color_classify_ino.ino",
+    "output": "./build"
+}
