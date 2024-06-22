@@ -12,13 +12,15 @@
 #include <LiquidCrystal_I2C.h>
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
+// set build version for debugging: DEBUG or RELEASE
 #define DEBUG
 
 #ifdef DEBUG
-  #define LOG(fmt) Serial.println(fmt)
-  
+  #define LOG(fmt) Serial.print(fmt)
+  #define LOGln(fmt) Serial.println(fmt)
 #else
   #define LOG(fmt)
+  #define LOGln(fmt)
 #endif
 
 // global variables used for TensorFlow Lite (Micro)
@@ -120,9 +122,7 @@ void loop() {
 
   // check if there's an object close and well illuminated enough
   if (p == 0 && c > 10 && sum > 0) {
-  #if DEBUG == 1
-    Serial.println("Enter tflLite condition");
-  #endif
+    LOGln("Enter tflLite condition");
     float redRatio = r / sum;
     float greenRatio = g / sum;
     float blueRatio = b / sum;
@@ -132,25 +132,19 @@ void loop() {
     tflInputTensor->data.f[1] = greenRatio;
     tflInputTensor->data.f[2] = blueRatio;
 
-    #if DEBUG == 1
-    Serial.println("Set data input successfully");
-    #endif
+    LOGln("Set data input successfully");
 
     // Run inferencing
     TfLiteStatus invokeStatus = tflInterpreter->Invoke();
-    #if DEBUG == 1
-    Serial.println("Invoke tflLite");
-    #endif
+    LOGln("Invoke tflLite");
 
     if (invokeStatus != kTfLiteOk) {
       lcd.println("Invoke failed!");
-      Serial.println("Invoke failed!");
+      LOGln("Invoke failed!");
       return;
     }
 
-    #if DEBUG == 1
-    Serial.println("Invoke Successful");
-    #endif
+    LOGln("Invoke Successful");
 
     // Output results
     float max = -1;
