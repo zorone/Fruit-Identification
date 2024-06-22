@@ -40,7 +40,7 @@ compiler.size.cmd={build.crossprefix}size
 compiler.define=-DARDUINO=
 
 # this can be overriden in boards.txt
-compiler.extra_flags=-save-temps=obj -E
+compiler.extra_flags=-save-temps=obj -P
 build.extra_flags=
 build.extra_ldflags=
 compiler.mbed=
