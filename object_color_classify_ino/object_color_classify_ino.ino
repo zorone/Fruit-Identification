@@ -13,7 +13,7 @@
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 // set build version for debugging: DEBUG or RELEASE
-#define DEBUG
+#define RELEASE
 
 #ifdef DEBUG
   #define LOG(fmt) Serial.print(fmt)
