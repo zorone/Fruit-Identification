@@ -15,9 +15,10 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 #define DEBUG
 
 #ifdef DEBUG
-  #define LOG(fmt, ) Serial.println(fmt __VA_OPT__(,) __VA_ARGS__)
+  #define LOG(fmt) Serial.println(fmt)
+  
 #else
-  #define LOG(fmt, ...)
+  #define LOG(fmt)
 #endif
 
 // global variables used for TensorFlow Lite (Micro)
@@ -103,18 +104,18 @@ void loop() {
   p = APDS.readProximity();
   sum = r + g + b;
 
-  Serial.print("r = ");
-  Serial.print(r);
-  Serial.print(", g = ");
-  Serial.print(g);
-  Serial.print(", b = ");
-  Serial.println(b);
-  Serial.print("c = ");
-  Serial.print(c);
-  Serial.print(", p = ");
-  Serial.print(p);
-  Serial.print(", sum = ");
-  Serial.println(sum);
+  LOG("r = ");
+  LOG(r);
+  LOG(", g = ");
+  LOG(g);
+  LOG(", b = ");
+  LOGln(b);
+  LOG("c = ");
+  LOG(c);
+  LOG(", p = ");
+  LOG(p);
+  LOG(", sum = ");
+  LOGln(sum);
   #endif
 
   // check if there's an object close and well illuminated enough
