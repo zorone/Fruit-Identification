@@ -12,7 +12,13 @@
 #include <LiquidCrystal_I2C.h>
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
-#define DEBUG 0
+#define DEBUG
+
+#ifdef DEBUG
+  #define LOG(fmt, ) Serial.println(fmt __VA_OPT__(,) __VA_ARGS__)
+#else
+  #define LOG(fmt, ...)
+#endif
 
 // global variables used for TensorFlow Lite (Micro)
 tflite::MicroErrorReporter tflErrorReporter;
@@ -97,7 +103,6 @@ void loop() {
   p = APDS.readProximity();
   sum = r + g + b;
 
-  #if DEBUG == 1
   Serial.print("r = ");
   Serial.print(r);
   Serial.print(", g = ");
